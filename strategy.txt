@@ -1,0 +1,19 @@
+I scribbled a bunch of thoughts for this when I woke up :
+
+Basic Plan :
+1. Dump the export as is to long context LLM and get summary - basic
+2. convert export to sliding window summaries and use those for later final summary - should solve context length issue completely ( will need to play with window size here as well )
+3. Constrain capture or convert captures to viewport contents only
+4. Combine 2 with 3
+5. Minify DOM
+6. Test Combinations 5,2  5,3  5,2,3
+
+Have an Ideal eval data set with data that you would like to see captured - that is core essential points you want in the summary for a given export and then construct evals around the pipeline.
+
+For optimization steps you could get away with having the larger model do this summary generation and then capture essential points from it and use those as evals thereby reducing manual labelling effort
+
+For prompt optimization you can have a loop with prompt_optimizer being fed your eval result and current prompt till evals hit a satisfactory value. You might need to manually label a bit here since we are working with the parent model - you could reduce effort even further by having a few summaries and points highlighted and then use an LLM to generate more based on your critique style - you can even optimize the dataset creating prompt using a similar loop system. ( you could really just optimize this prompt till the atomic level of whats describable tbh )
+
+Once all that is done with a SOTA model , you can try model distillation to drive down costs and remove each component out. But the pain in the ass is gonna be that you have to test and evaluate the ROI of each of these experiments.
+
+Making an evals is the highest ROI item you could do as it lays foundation for all optimizations later on
